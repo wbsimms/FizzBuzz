@@ -37,6 +37,17 @@ namespace FizzBuzz.Lib.Test
 		}
 
 		[Test]
+		public void CanReverseTraverseTest()
+		{
+			FizzBuzz fb = new FizzBuzz(config);
+			var result = fb.BuildResults(16);
+			Assert.IsTrue(result);
+			Assert.AreEqual("Fizz Buzz", fb.GetResult(15).Result);
+			Assert.AreEqual("Fizz", fb.GetResult(3).Result);
+		}
+
+
+		[Test]
 		public void Int32MaxValueInvalidTest()
 		{
 			FizzBuzz fb = new FizzBuzz(config);
