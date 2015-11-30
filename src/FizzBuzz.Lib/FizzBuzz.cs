@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace FizzBuzz.Lib
 {
+	// This provides random access to results.
     public class FizzBuzz
     {
 	    private List<FizzBuzzConfiguration> clientConfiguration;
@@ -20,6 +21,7 @@ namespace FizzBuzz.Lib
 
 	    public FizzBuzzResult GetResult(int value)
 	    {
+
 			var retval = new FizzBuzzResult() { Value = value};
 			StringBuilder sb = new StringBuilder();
 		    foreach (var store in storage)
@@ -74,16 +76,4 @@ namespace FizzBuzz.Lib
 		    public BitArray BitArray { get; set; }
 	    }
     }
-
-	public class FizzBuzzConfiguration
-	{
-		public int Value { get; set; }
-		public string Text { get; set; }
-	}
-
-	public class FizzBuzzResult
-	{
-		public int Value { get; set; }
-		public string Result { get; set; }
-	}
 }
