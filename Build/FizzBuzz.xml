@@ -1,10 +1,9 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="TestFast">
 	<PropertyGroup>
 		<EFVersion>6.1.3</EFVersion>
-		<MainSln>..\ElasticTransfer.sln</MainSln>
-		<ElasticTransferLib>..\src\ElasticTransfer.Lib.Test\bin\ElasticTransfer.Lib.Test.dll</ElasticTransferLib>
-    <ElasticTransfer>..\src\ElasticTransfer.Test\bin\ElasticTransfer.Test.dll</ElasticTransfer>
-    <TestContainers>/testcontainer:$(ElasticTransferLib) /testcontainer:$(ElasticTransfer)</TestContainers>
+		<MainSln>..\FizzBuzz.sln</MainSln>
+		<FizzBuzzLib>..\src\FizzBuzz.Lib.Test\bin\FizzBuzz.Lib.Test.dll</FizzBuzzLib>
+    <TestContainers>/testcontainer:$(FizzBuzzLib) </TestContainers>
 	</PropertyGroup>
 
 	<Target Name="TestFast">
@@ -18,28 +17,30 @@
 
 	<Target Name="TestAll">
 		<Message Text="========= Testing All ========" />
-		<Exec Command='mstest.exe /nologo  $(TestContainers) /detail:description' />
+    <!-- I've only build this out for MSTEST -->
+    <!--<Exec Command='mstest.exe /nologo  $(TestContainers) /detail:description' />-->
 	</Target>
 
 	<Target Name="TestOnly">
 		<Message Text="========= Testing All ========" />
 		<Exec Command='del TestResults.trx' />
-		<Exec Command='mstest.exe /category:"!DataImport&amp;!Utility" /detail:description /nologo  $(TestContainers) /resultsfile:TestResults.trx' />
+    <!-- I've only build this out for MSTEST -->
+    <!--<Exec Command='mstest.exe /category:"!DataImport&amp;!Utility" /detail:description /nologo  $(TestContainers) /resultsfile:TestResults.trx' />-->
 	</Target>
 
 	<!-- This is for NCover 5 -->
 	<Target Name="AddEnableCoverage">
 		<Message Text="========= Testing All ========" />
-		<Exec Command='ncover project-import --file=ElasticTransfer.ncover --overwrite' ContinueOnError='false' />
-		<Exec Command='ncover enable ElasticTransfer' />
+		<Exec Command='ncover project-import --file=FizzBuzz.ncover --overwrite' ContinueOnError='false' />
+		<Exec Command='ncover enable FizzBuzz' />
 	</Target>
 
 	<!-- This is for NCover 5 -->
 	<Target Name="GetCoverageReport">
 		<Message Text="========= Testing All ========" />
-		<Exec Command='ncover summarize --project=ElasticTransfer --wait --fail-build' />
+		<Exec Command='ncover summarize --project=FizzBuzz --wait --fail-build' />
 		<MakeDir Directories="coverage" /> 
-		<Exec Command='ncover report --project=ElasticTransfer --file="coverage\fullcoveragereport.html"' />
+		<Exec Command='ncover report --project=FizzBuzz --file="coverage\fullcoveragereport.html"' />
 		<Exec Command='NCoverReportUpdater.exe coverage\fullcoveragereport.html http://localhost:80' />
 	</Target>
 
@@ -73,12 +74,12 @@
 			<CallTarget Targets="DropDatabaseCI" />
  			<CallTarget Targets="TransformsCI" />
 			<Copy SourceFiles="..\packages\EntityFramework.$(EFVersion)\tools\migrate.exe" DestinationFolder="..\src\DataAccess\RuleGist.DataAccess\bin\" ></Copy>
-			<Exec WorkingDirectory="..\src\DataAccess\RuleGist.DataAccess\bin\" Command='migrate RuleGist.DataAccess.dll /startUpConfigurationFile=ElasticTransfer.DataAccess.dll.config' />
+			<Exec WorkingDirectory="..\src\DataAccess\RuleGist.DataAccess\bin\" Command='migrate RuleGist.DataAccess.dll /startUpConfigurationFile=FizzBuzz.DataAccess.dll.config' />
 		</Target>
 
 <!-- 		<Target Name='TransformsCI'>
-			<Exec Command="ctt.exe t:..\src\DataAccess\ElasticTransfer.DataAccess\App.CI.config s:..\src\DataAccess\ElasticTransfer.DataAccess\App.config d:..\src\DataAccess\ElasticTransfer.DataAccess\bin\ElasticTransfer.DataAccess.dll.config" />
-			<Exec Command="ctt.exe t:..\src\DataAccess\ElasticTransfer.DataAccess\App.CI.config s:..\src\DataAccess\ElasticTransfer.DataAccess\App.config d:..\src\DataAccess\ElasticTransfer.DataAccess.Test\bin\ElasticTransfer.DataAccess.Test.dll.config" />
+			<Exec Command="ctt.exe t:..\src\DataAccess\FizzBuzz.DataAccess\App.CI.config s:..\src\DataAccess\FizzBuzz.DataAccess\App.config d:..\src\DataAccess\FizzBuzz.DataAccess\bin\FizzBuzz.DataAccess.dll.config" />
+			<Exec Command="ctt.exe t:..\src\DataAccess\FizzBuzz.DataAccess\App.CI.config s:..\src\DataAccess\FizzBuzz.DataAccess\App.config d:..\src\DataAccess\ElasticTransfer.DataAccess.Test\bin\ElasticTransfer.DataAccess.Test.dll.config" />
 			<Exec Command="ctt.exe t:..\src\DataAccess\ElasticTransfer.DataAccess\App.CI.config s:..\src\Logging\Logging.Lib\App.config d:..\src\Logging\Logging.Lib.Test\bin\Logging.Lib.Test.dll.config" />
 
 			<Exec Command="ctt.exe t:..\src\DataAccess\ElasticTransfer.DataAccess\App.CI.config s:..\src\SearchProcessorWorkerRole\App.config d:..\src\SearchProcessorWorkerRole\bin\SearchProcessorWorkerRole.dll.config" />

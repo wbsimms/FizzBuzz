@@ -1,5 +1,5 @@
 {
-	"Name" : "ElasticTransfer",
+	"Name" : "FizzBuzz",
 	"Config" : {
 		"sequencePtCvgThreshold" : 84.0,
 		"branchCvgThreshold" : 81.5,
@@ -32,31 +32,7 @@
 					"include" : true,
 					"field" : "Module",
 					"condition" : "Matches",
-					"value" : "ElasticTransfer.exe",
-					"serverRule" : false
-				},{
-					"include" : true,
-					"field" : "Module",
-					"condition" : "Matches",
-					"value" : "ElasticTransfer.Lib.dll",
-					"serverRule" : false
-				}, {
-					"include" : false,
-					"field" : "Attribute",
-					"condition" : "Matches",
-					"value" : "System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverage",
-					"serverRule" : false
-				}, {
-					"include" : false,
-					"field" : "Attribute",
-					"condition" : "Matches",
-					"value" : "System.Runtime.CompilerServices.CompilerGeneratedAttribute",
-					"serverRule" : false
-				}, {
-					"include" : false,
-					"field" : "Attribute",
-					"condition" : "Matches",
-					"value" : "System.CodeDom.Compiler.GeneratedCodeAttribute",
+					"value" : "FizzBuzz.Lib.dll",
 					"serverRule" : false
 				}
 			]

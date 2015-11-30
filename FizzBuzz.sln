@@ -9,6 +9,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzBuzz.Lib", "src\FizzBuz
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzBuzz.Lib.Test", "src\FizzBuzz.Lib.Test\FizzBuzz.Lib.Test.csproj", "{8F59B68E-8A9F-4187-8358-78B815ACBB9D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{6AA1E519-B4C0-4925-88A3-6303CA00A54C}"
+	ProjectSection(SolutionItems) = preProject
+		Build\clean.bat = Build\clean.bat
+		Build\FizzBuzz.ncover = Build\FizzBuzz.ncover
+		Build\FizzBuzz.xml = Build\FizzBuzz.xml
+		Build\testfast.bat = Build\testfast.bat
+		Build\testfast_nc5.bat = Build\testfast_nc5.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

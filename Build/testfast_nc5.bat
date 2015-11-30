@@ -1,2 +1,3 @@
 @echo off
-msbuild ElasticTransfer.xml /t:SimianReport;BuildCommon;AddEnableCoverage;TestOnly;GetCoverageReport
+msbuild FizzBuzz.xml /t:SimianReport;BuildCommon;AddEnableCoverage;TestOnly
+REM ;GetCoverageReport

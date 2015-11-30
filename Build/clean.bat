@@ -1,1 +1,1 @@
-msbuild ElasticTransfer.xml /t:Clean 
+msbuild FizzBuzz.xml /t:Clean 
