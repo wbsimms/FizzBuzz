@@ -57,6 +57,18 @@ namespace FizzBuzz.Lib
 			if (max >= Int32.MaxValue) throw new ArgumentException("Max value is" + Int32.MaxValue);
 			SetUp(max);
 
+			// This is 2 seconds faster for Int32.MaxValue/8 than the non-parallel version below. But uses 100% cpu :)
+			//Parallel.ForEach(Enumerable.Range(1, max), i =>
+			//{
+			//	foreach (var store in storage)
+			//	{
+			//		if (i % store.Config.Value == 0)
+			//		{
+			//			store.BitArray[i] = true;
+			//		}
+			//	}
+			//});
+
 			foreach (var i in Enumerable.Range(1, max))
 			{
 				foreach (var store in storage)
@@ -67,7 +79,7 @@ namespace FizzBuzz.Lib
 					}
 				}
 			}
-		    return true;
+			return true;
 	    }
 
 	    class FizzBuzzConfigurationInt

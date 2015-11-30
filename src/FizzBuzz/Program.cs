@@ -18,14 +18,16 @@ namespace FizzBuzz
 				new FizzBuzzConfiguration() {Text = "Bar", Value = 5},
                 new FizzBuzzConfiguration() {Text = "Zip", Value = 7}
 			});
-			//int count = Int32.MaxValue - 1; // don't run this. :)
-			int count = 100;
+			int count = Int32.MaxValue/8; // don't run this. :)
+			//int count = 100;
+			Console.WriteLine(DateTime.Now.ToString());
 			buzz.BuildResults(count);
-			foreach (var i in Enumerable.Range(1,count))
-			{
-				var result = buzz.GetResult(i);
-				Console.WriteLine(result.Value + " " + result.Result);
-			}
+			Console.WriteLine(DateTime.Now.ToString());
+			//foreach (var i in Enumerable.Range(1, count))
+			//{
+			//	var result = buzz.GetResult(i);
+			//	Console.WriteLine(result.Value + " " + result.Result);
+			//}
 		}
 	}
 }
