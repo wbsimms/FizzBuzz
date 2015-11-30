@@ -1,0 +1,118 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0" DefaultTargets="TestFast">
+	<PropertyGroup>
+		<EFVersion>6.1.3</EFVersion>
+		<MainSln>..\ElasticTransfer.sln</MainSln>
+		<ElasticTransferLib>..\src\ElasticTransfer.Lib.Test\bin\ElasticTransfer.Lib.Test.dll</ElasticTransferLib>
+    <ElasticTransfer>..\src\ElasticTransfer.Test\bin\ElasticTransfer.Test.dll</ElasticTransfer>
+    <TestContainers>/testcontainer:$(ElasticTransferLib) /testcontainer:$(ElasticTransfer)</TestContainers>
+	</PropertyGroup>
+
+	<Target Name="TestFast">
+		<CallTarget Targets="BuildCommon" />
+		<CallTarget Targets="TestAll" />
+	</Target>
+
+	<Target Name="BuildCommon">
+		<CallTarget Targets="BuildMain" />
+	</Target>
+
+	<Target Name="TestAll">
+		<Message Text="========= Testing All ========" />
+		<Exec Command='mstest.exe /nologo  $(TestContainers) /detail:description' />
+	</Target>
+
+	<Target Name="TestOnly">
+		<Message Text="========= Testing All ========" />
+		<Exec Command='del TestResults.trx' />
+		<Exec Command='mstest.exe /category:"!DataImport&amp;!Utility" /detail:description /nologo  $(TestContainers) /resultsfile:TestResults.trx' />
+	</Target>
+
+	<!-- This is for NCover 5 -->
+	<Target Name="AddEnableCoverage">
+		<Message Text="========= Testing All ========" />
+		<Exec Command='ncover project-import --file=ElasticTransfer.ncover --overwrite' ContinueOnError='false' />
+		<Exec Command='ncover enable ElasticTransfer' />
+	</Target>
+
+	<!-- This is for NCover 5 -->
+	<Target Name="GetCoverageReport">
+		<Message Text="========= Testing All ========" />
+		<Exec Command='ncover summarize --project=ElasticTransfer --wait --fail-build' />
+		<MakeDir Directories="coverage" /> 
+		<Exec Command='ncover report --project=ElasticTransfer --file="coverage\fullcoveragereport.html"' />
+		<Exec Command='NCoverReportUpdater.exe coverage\fullcoveragereport.html http://localhost:80' />
+	</Target>
+
+	<Target Name="RemoveTestResults">
+		<Exec Command='rmdir /S /Q TestResults' />
+	</Target>
+
+	<Target Name="SimianReport">
+		<Exec Command='simian-2.3.35.exe -includes=../src/**/*.cs -excludes=**/obj -excludes=**/bin -formatter=xml -failOnDuplication- > simian.xml' />
+			<Exec Command='SimianOutputCleaner.exe' />
+		</Target>
+
+		<Target Name="Clean">
+			<Message Text="================= Cleaning $(MainSln)"></Message>
+			<PropertyGroup>
+				<OutDir>$(SolutionRoot)\Bin\</OutDir>
+			</PropertyGroup>
+			<MSBuild Projects="$(MainSln)" Properties='OutDir=bin\' Targets='Clean'></MSBuild>
+			<RemoveDir Directories='obj\'></RemoveDir>
+			<Exec Command='git clean -fx -d' WorkingDirectory="..\" />
+		</Target>
+
+		<Target Name="DropDatabase">
+			<Message Text="====== Drop Database =====" />
+			<!--<Exec Command='iisreset' IgnoreExitCode="True" />-->
+			<Exec Command='sqlcmd.exe -S (local) -E -Q "drop database [RuleGist_DEV]"' IgnoreExitCode="False" />
+		</Target>
+
+		<Target Name="CreateDatabaseCI">
+			<Message Text="================= Creating Database"></Message>
+			<CallTarget Targets="DropDatabaseCI" />
+ 			<CallTarget Targets="TransformsCI" />
+			<Copy SourceFiles="..\packages\EntityFramework.$(EFVersion)\tools\migrate.exe" DestinationFolder="..\src\DataAccess\RuleGist.DataAccess\bin\" ></Copy>
+			<Exec WorkingDirectory="..\src\DataAccess\RuleGist.DataAccess\bin\" Command='migrate RuleGist.DataAccess.dll /startUpConfigurationFile=ElasticTransfer.DataAccess.dll.config' />
+		</Target>
+
+<!-- 		<Target Name='TransformsCI'>
+			<Exec Command="ctt.exe t:..\src\DataAccess\ElasticTransfer.DataAccess\App.CI.config s:..\src\DataAccess\ElasticTransfer.DataAccess\App.config d:..\src\DataAccess\ElasticTransfer.DataAccess\bin\ElasticTransfer.DataAccess.dll.config" />
+			<Exec Command="ctt.exe t:..\src\DataAccess\ElasticTransfer.DataAccess\App.CI.config s:..\src\DataAccess\ElasticTransfer.DataAccess\App.config d:..\src\DataAccess\ElasticTransfer.DataAccess.Test\bin\ElasticTransfer.DataAccess.Test.dll.config" />
+			<Exec Command="ctt.exe t:..\src\DataAccess\ElasticTransfer.DataAccess\App.CI.config s:..\src\Logging\Logging.Lib\App.config d:..\src\Logging\Logging.Lib.Test\bin\Logging.Lib.Test.dll.config" />
+
+			<Exec Command="ctt.exe t:..\src\DataAccess\ElasticTransfer.DataAccess\App.CI.config s:..\src\SearchProcessorWorkerRole\App.config d:..\src\SearchProcessorWorkerRole\bin\SearchProcessorWorkerRole.dll.config" />
+			<Exec Command="ctt.exe t:..\src\DataAccess\ElasticTransfer.DataAccess\App.CI.config s:..\src\SearchProcessor.Lib.Test\app.config d:..\src\SearchProcessor.Lib.Test\bin\SearchProcessor.Lib.Test.dll.config" />
+			<Exec Command="ctt.exe t:..\src\DataAccess\ElasticTransfer.DataAccess\App.CI.config s:..\src\ResultsImporterWorkerRole\App.config d:..\src\ResultsImporterWorkerRole\bin\ResultsImporterWorkerRole.dll.config" />
+			<Exec Command="ctt.exe t:..\src\DataAccess\ElasticTransfer.DataAccess\App.CI.config s:..\src\ResultsImporter.Lib.Test\App.config d:..\src\ResultsImporter.Lib.Test\bin\ResultsImporter.Lib.Test.dll.config" />
+		</Target> -->
+
+  <Target Name="CreateDatabase">
+			<Message Text="================= Creating Database"></Message>
+			<CallTarget Targets="DropDatabase" />
+			<Copy SourceFiles="..\packages\EntityFramework.$(EFVersion)\tools\migrate.exe" DestinationFolder="..\src\DataAccess\RuleGist.DataAccess\bin\" ></Copy>
+			<Exec WorkingDirectory="..\src\DataAccess\RuleGist.DataAccess\bin\" Command='migrate RuleGist.DataAccess.dll /startUpConfigurationFile=RuleGist.DataAccess.dll.config' />
+		</Target>
+
+		<Target Name="BuildMain">
+			<Message Text="================= Building $(MainSln)"></Message>
+			<!--<Exec Command="..\.nuget\NuGet.exe restore $(MainSln)" />-->
+			<CallTarget Targets="RemoveTestResults" />
+			<PropertyGroup>
+				<OutDir>$(SolutionRoot)\Bin\</OutDir>
+			</PropertyGroup>
+			<MSBuild Projects="$(MainSln)" Properties='Configuration=Debug;OutDir=bin\;nowarn=1591' Targets='Rebuild'></MSBuild>
+			<RemoveDir Directories='obj\'></RemoveDir>
+		</Target>
+
+	</Project>
+
+	<!-- 
+Rebuild Test Database
+Update-Database -ProjectName "ElasticTransfer.DataAccess" -Force -ConnectionString "Server=tcp:owfrgsrsn8.database.windows.net,1433;Database=ElasticTransfer_Test;User ID=bsimms@owfrgsrsn8;Password=1Quartic;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" -ConnectionProviderName "System.Data.SqlClient" -Verbose
+-->
+
+	<!-- 
+Rebuild Production Database
+Update-Database -ProjectName "ElasticTransfer.DataAccess" -Force -ConnectionString "Server=tcp:owfrgsrsn8.database.windows.net,1433;Database=ElasticTransfer;User ID=bsimms@owfrgsrsn8;Password=1Quartic;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;" -ConnectionProviderName "System.Data.SqlClient" -Verbose
+-->

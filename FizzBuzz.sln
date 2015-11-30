@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzBuzz", "FizzBuzz\FizzBuzz.csproj", "{EF76387E-85E6-4A2B-9852-C61E699F21E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzBuzz", "src\FizzBuzz\FizzBuzz.csproj", "{EF76387E-85E6-4A2B-9852-C61E699F21E2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzBuzz.Lib", "FizzBuzz.Lib\FizzBuzz.Lib.csproj", "{4951A4D6-989A-4940-9759-4056E355DEAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzBuzz.Lib", "src\FizzBuzz.Lib\FizzBuzz.Lib.csproj", "{4951A4D6-989A-4940-9759-4056E355DEAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzBuzz.Lib.Test", "FizzBuzz.Lib.Test\FizzBuzz.Lib.Test.csproj", "{8F59B68E-8A9F-4187-8358-78B815ACBB9D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FizzBuzz.Lib.Test", "src\FizzBuzz.Lib.Test\FizzBuzz.Lib.Test.csproj", "{8F59B68E-8A9F-4187-8358-78B815ACBB9D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
