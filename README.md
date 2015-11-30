@@ -4,9 +4,9 @@ This is for Clear Measure
 There are two classes of interest:
 
 1. FizzBuzz
-	For random access retrieval
+	1. For random access retrieval
 1. FizzBuzzEnumerable
-	For one-way retrieval
+	1. For one-way retrieval
 
 ## FizzBuzz
 
@@ -33,6 +33,7 @@ fb.BuildResult(40) // FizzBuzz to 40
 
 ```C#
 string result = fb.GetResult(15).Result; // result is "Fizz Buzz"
+string result = fb.GetResult(3).Result; // result is "Fizz"
 ```
 
 ## FizzBuzzEnumerable
