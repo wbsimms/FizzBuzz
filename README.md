@@ -27,7 +27,7 @@ var config = new List<FizzBuzzConfiguration>()
 ```c#
 FizzBuzz fb = new FizzBuzz(config);
 fb.BuildResult(40) // FizzBuzz to 40
-``` 
+```
 
 ###- Retreive the results in any order desired
 
@@ -62,4 +62,38 @@ foreach (var result in fb)
 {
 	console.writeline(result);
 }
+```
+
+
+## FizzBuzzEvents
+
+Usage:
+
+###- Create your configurations
+
+```c#
+var config = new List<FizzBuzzConfiguration>()
+{
+	new FizzBuzzConfiguration() {Text = "Fizz", Value = 3},
+	new FizzBuzzConfiguration() {Text = "Buzz", Value = 5},
+};
+```
+
+###- Create your FizzBuzzEvents with the number of records and configurations
+
+```c#
+FizzBuzzEvents fb = new FizzBuzzEvents(15, config);
+```
+
+###- Subscribe to the Resulted event
+```c#
+fb.FizzBuzzResulted += (example, args) =>
+{
+	console.writeline(args.Result.Result);
+};
+```
+
+###- Calling GetResults will trigger the event
+```C#
+fb.GetReslts();
 ```

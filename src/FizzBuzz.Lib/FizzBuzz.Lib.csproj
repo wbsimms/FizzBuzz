@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="FizzBuzz.cs" />
     <Compile Include="FizzBuzzConfiguration.cs" />
+    <Compile Include="FizzBuzzEvents.cs" />
     <Compile Include="FizzBuzzEnumerable.cs" />
     <Compile Include="FizzBuzzResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
